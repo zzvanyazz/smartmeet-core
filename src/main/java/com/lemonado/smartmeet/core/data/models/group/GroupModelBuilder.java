@@ -17,6 +17,21 @@ public class GroupModelBuilder {
         return new GroupModelBuilder();
     }
 
+    public static GroupModelBuilder from(GroupModel groupModel) {
+        var builder = new GroupModelBuilder();
+        builder.id = groupModel.id();
+        builder.name = groupModel.name();
+        builder.creator = groupModel.creator();
+        builder.code = groupModel.code();
+        builder.users = new HashSet<>(groupModel.users());
+        return builder;
+    }
+
+    public GroupModelBuilder withoutId() {
+        this.id = 0;
+        return this;
+    }
+
     public GroupModelBuilder withId(long id) {
         this.id = id;
         return this;

@@ -32,21 +32,41 @@ public class GroupService {
     @Autowired
     private UserService userService;
 
-    public GroupModel groupService(@NotNull UserModel creator, @NotNull String name)
+    public GroupModel createGroup(long creatorId, @NotNull String name)
             throws NoSuchAlgorithmException, UserNotFoundException {
-        userService.assertExists(creator.id());
-        var length = secureOptions.getGroupCodeLength();
-        var code = secureRandomService.generateAlphaNumeric(length);
+        var creator = userService.getUser(creatorId);
+
+        var code = generateInviteCode();
         var groupModel = GroupModelBuilder.builder()
                 .withCode(code)
                 .withCreator(creator)
                 .withName(name)
                 .build();
 
-        return groupRepository.safe(groupModel);
+        return groupRepository.save(groupModel);
     }
 
-    public GroupModel registerUserToGroup(@NotNull UserModel user, String code) throws InvalidGroupException {
+    public GroupModel updateGroupName(long groupId, String name) throws InvalidGroupException {
+        var group = getGroupModel(groupId);
+
+        group = GroupModelBuilder.from(group)
+                .withName(name)
+                .build();
+        return groupRepository.save(group);
+    }
+
+    public GroupModel updateGroupCode(long groupId) throws InvalidGroupException, NoSuchAlgorithmException {
+        var group = getGroupModel(groupId);
+        var code = generateInviteCode();
+        group = GroupModelBuilder.from(group)
+                .withCode(code)
+                .build();
+        return groupRepository.save(group);
+    }
+
+    public GroupModel registerUserToGroup(long userId, String code)
+            throws InvalidGroupException, UserNotFoundException {
+        var user = userService.getUser(userId);
         var groupModel = groupRepository.getGroupByCode(code)
                 .orElseThrow(InvalidGroupException::new);
         if (!groupModel.users().contains(user)) {
@@ -56,11 +76,8 @@ public class GroupService {
         return groupModel;
     }
 
-    public GroupModel getGroupModel(long groupId, long userId)
-            throws InvalidGroupException, UnsupportedGroupException, UserNotFoundException {
-
-        assertExistsInGroup(groupId, userId);
-
+    public GroupModel getGroupModel(long groupId)
+            throws InvalidGroupException{
         return groupRepository.getGroupById(groupId)
                 .orElseThrow(InvalidGroupException::new);
     }
@@ -81,6 +98,11 @@ public class GroupService {
         userService.assertExists(userId);
         if (!groupRepository.existsInGroup(groupId, userId))
             throw new UnsupportedGroupException();
+    }
+
+    private String generateInviteCode() throws NoSuchAlgorithmException {
+        var length = secureOptions.getGroupCodeLength();
+        return secureRandomService.generateAlphaNumeric(length);
     }
 
 }

@@ -10,7 +10,7 @@ import java.util.Set;
 @Repository
 public interface GroupRepository {
 
-    GroupModel safe(GroupModel groupModel);
+    GroupModel save(GroupModel groupModel);
 
     boolean existsById(long id);
 
