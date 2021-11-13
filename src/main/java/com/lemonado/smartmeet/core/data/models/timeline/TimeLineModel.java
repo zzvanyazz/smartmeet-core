@@ -13,4 +13,19 @@ public record TimeLineModel(
         UserModel user,
         TimeLineType timeLineType) {
 
+    public boolean intersects(TimeLineModel timeLineModel) {
+        return includes(timeLineModel.startDate) ||
+                includes(timeLineModel.endDate) ||
+                timeLineModel.includes(startDate) ||
+                timeLineModel.includes(endDate);
+    }
+
+    public boolean includes(LocalDateTime dateTime) {
+        return startDate.isBefore(dateTime) && endDate.isAfter(dateTime);
+    }
+
+    public boolean isIncludedIn(TimeLineModel timeLineModel) {
+        return timeLineModel.includes(startDate) && timeLineModel.includes(endDate);
+    }
+
 }

@@ -21,10 +21,29 @@ public class TimeLineBuilder {
         return new TimeLineBuilder();
     }
 
+    public static TimeLineBuilder from(TimeLineModel timeLineModel) {
+        return new TimeLineBuilder(timeLineModel);
+    }
+
+
+    public TimeLineBuilder(TimeLineModel timeLineModel) {
+        this.id = timeLineModel.id();
+        this.startDate = timeLineModel.startDate();
+        this.endDate = timeLineModel.endDate();
+        this.groupModel = timeLineModel.groupModel();
+        this.user = timeLineModel.user();
+        this.timeLineType = timeLineModel.timeLineType();
+    }
+
     public TimeLineBuilder() {
     }
 
-    public TimeLineBuilder setId(long id) {
+    public TimeLineBuilder withoutId() {
+        this.id = 0;
+        return this;
+    }
+
+    public TimeLineBuilder withId(long id) {
         this.id = id;
         return this;
     }
@@ -39,7 +58,7 @@ public class TimeLineBuilder {
         return this;
     }
 
-    public TimeLineBuilder setGroupModel(GroupModel groupModel) {
+    public TimeLineBuilder withGroupModel(GroupModel groupModel) {
         this.groupModel = groupModel;
         return this;
     }

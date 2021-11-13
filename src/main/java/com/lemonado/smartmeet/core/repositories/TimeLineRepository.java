@@ -8,10 +8,14 @@ import java.util.List;
 @Repository
 public interface TimeLineRepository {
 
-    List<TimeLineModel> getTimeLines(long groupId, long userId);
+    List<TimeLineModel> findByGroupAndUser(long groupId, long userId);
 
-    List<TimeLineModel> getTimeLines(long groupId);
+    List<TimeLineModel> findByGroup(long groupId);
 
-    TimeLineModel addTimeLine(TimeLineModel model);
+    void remove(TimeLineModel timeLineModel);
+
+    TimeLineModel update(TimeLineModel timeLineModel);
+
+    TimeLineModel save(TimeLineModel model);
 
 }
