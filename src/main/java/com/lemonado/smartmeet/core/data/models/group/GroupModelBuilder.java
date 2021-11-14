@@ -11,7 +11,7 @@ public class GroupModelBuilder {
     private String name;
     private UserModel creator;
     private String code;
-    private Set<UserModel> users = new HashSet<>();
+    private Set<GroupUserModel> users = new HashSet<>();
 
     public static GroupModelBuilder builder() {
         return new GroupModelBuilder();
@@ -52,7 +52,7 @@ public class GroupModelBuilder {
         return this;
     }
 
-    public GroupModelBuilder withUsers(Set<UserModel> users) {
+    public GroupModelBuilder withUsers(Set<GroupUserModel> users) {
         this.users = users;
         return this;
     }

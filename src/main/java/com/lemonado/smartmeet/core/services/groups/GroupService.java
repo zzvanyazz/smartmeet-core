@@ -5,7 +5,6 @@ import com.lemonado.smartmeet.core.data.exceptions.group.InvalidGroupException;
 import com.lemonado.smartmeet.core.data.exceptions.group.UnsupportedGroupException;
 import com.lemonado.smartmeet.core.data.models.group.GroupModel;
 import com.lemonado.smartmeet.core.data.models.group.GroupModelBuilder;
-import com.lemonado.smartmeet.core.data.models.users.UserModel;
 import com.lemonado.smartmeet.core.options.SecureOptions;
 import com.lemonado.smartmeet.core.repositories.GroupRepository;
 import com.lemonado.smartmeet.core.services.secure.SecureRandomService;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
+import java.util.Set;
 
 @Service
 public class GroupService {
@@ -47,7 +46,7 @@ public class GroupService {
     }
 
     public GroupModel updateGroupName(long groupId, String name) throws InvalidGroupException {
-        var group = getGroupModel(groupId);
+        var group = getGroup(groupId);
 
         group = GroupModelBuilder.from(group)
                 .withName(name)
@@ -55,8 +54,9 @@ public class GroupService {
         return groupRepository.save(group);
     }
 
-    public GroupModel updateGroupCode(long groupId) throws InvalidGroupException, NoSuchAlgorithmException {
-        var group = getGroupModel(groupId);
+    public GroupModel updateGroupCode(long groupId)
+            throws InvalidGroupException, NoSuchAlgorithmException {
+        var group = getGroup(groupId);
         var code = generateInviteCode();
         group = GroupModelBuilder.from(group)
                 .withCode(code)
@@ -64,25 +64,18 @@ public class GroupService {
         return groupRepository.save(group);
     }
 
-    public GroupModel registerUserToGroup(long userId, String code)
-            throws InvalidGroupException, UserNotFoundException {
-        var user = userService.getUser(userId);
-        var groupModel = groupRepository.getGroupByCode(code)
-                .orElseThrow(InvalidGroupException::new);
-        if (!groupModel.users().contains(user)) {
-            groupModel.users().add(user);
-            groupModel = groupRepository.update(groupModel);
-        }
-        return groupModel;
-    }
-
-    public GroupModel getGroupModel(long groupId)
-            throws InvalidGroupException{
+    public GroupModel getGroup(long groupId)
+            throws InvalidGroupException {
         return groupRepository.getGroupById(groupId)
                 .orElseThrow(InvalidGroupException::new);
     }
 
-    public List<GroupModel> getGroupsByUser(long userId) throws UserNotFoundException {
+    public GroupModel getGroupByCode(String code) throws InvalidGroupException {
+        return groupRepository.getGroupByCode(code)
+                .orElseThrow(InvalidGroupException::new);
+    }
+
+    public Set<GroupModel> getGroupsByUser(long userId) throws UserNotFoundException {
         userService.assertExists(userId);
         return groupRepository.getGroupsByUser(userId);
     }
@@ -92,11 +85,15 @@ public class GroupService {
             throw new InvalidGroupException();
     }
 
-    public void assertExistsInGroup(long groupId, long userId)
+    public boolean existsInGroup(long groupId, long userId) {
+        return groupRepository.existsInGroup(groupId, userId);
+    }
+
+    public void assertCreator(long groupId, long userId)
             throws UnsupportedGroupException, InvalidGroupException, UserNotFoundException {
         assertExists(groupId);
         userService.assertExists(userId);
-        if (!groupRepository.existsInGroup(groupId, userId))
+        if (!existsInGroup(groupId, userId))
             throw new UnsupportedGroupException();
     }
 
@@ -104,5 +101,6 @@ public class GroupService {
         var length = secureOptions.getGroupCodeLength();
         return secureRandomService.generateAlphaNumeric(length);
     }
+
 
 }

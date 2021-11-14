@@ -9,5 +9,5 @@ public record GroupModel(
         String name,
         UserModel creator,
         String code,
-        Set<UserModel> users) {
+        Set<GroupUserModel> users) {
 }

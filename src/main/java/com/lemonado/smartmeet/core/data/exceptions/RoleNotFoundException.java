@@ -1,6 +1,6 @@
 package com.lemonado.smartmeet.core.data.exceptions;
 
-public class RoleNotFoundException extends Exception {
+public class RoleNotFoundException extends RuntimeException {
 
     public RoleNotFoundException(String roleName) {
         super(String.format("Can not find role '%s'", roleName));

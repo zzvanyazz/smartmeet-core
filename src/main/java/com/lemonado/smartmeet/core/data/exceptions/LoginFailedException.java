@@ -1,6 +1,6 @@
 package com.lemonado.smartmeet.core.data.exceptions;
 
-public class LoginFailedException extends Exception {
+public class LoginFailedException extends RuntimeException {
     public LoginFailedException() {
         this("Username or password is incorrect.");
     }
