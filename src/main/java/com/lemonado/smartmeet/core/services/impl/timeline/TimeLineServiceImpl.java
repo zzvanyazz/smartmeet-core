@@ -1,4 +1,4 @@
-package com.lemonado.smartmeet.core.services.timeline;
+package com.lemonado.smartmeet.core.services.impl.timeline;
 
 import com.lemonado.smartmeet.core.data.exceptions.UserNotFoundException;
 import com.lemonado.smartmeet.core.data.exceptions.group.InvalidGroupException;
@@ -6,7 +6,9 @@ import com.lemonado.smartmeet.core.data.exceptions.group.UnsupportedGroupExcepti
 import com.lemonado.smartmeet.core.data.models.timeline.TimeLineModel;
 import com.lemonado.smartmeet.core.data.models.timeline.bilders.TimeLineBuilder;
 import com.lemonado.smartmeet.core.repositories.TimeLineRepository;
-import com.lemonado.smartmeet.core.services.groups.GroupService;
+import com.lemonado.smartmeet.core.services.base.groups.GroupService;
+import com.lemonado.smartmeet.core.services.base.groups.GroupUsersService;
+import com.lemonado.smartmeet.core.services.base.timeline.TimeLineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,32 +17,40 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class TimeLineService {
+public class TimeLineServiceImpl implements TimeLineService {
 
     @Autowired
     private TimeLineRepository timeLineRepository;
 
     @Autowired
+    private GroupUsersService groupUsersService;
+
+    @Autowired
     private GroupService groupService;
 
+
+    @Override
     public List<TimeLineModel> getTimeLines(long groupId) throws InvalidGroupException {
         groupService.assertExists(groupId);
         return timeLineRepository.findByGroup(groupId);
     }
 
+    @Override
     public List<TimeLineModel> getTimeLines(long groupId, long userId)
             throws InvalidGroupException, UserNotFoundException, UnsupportedGroupException {
-        groupService.assertExistsInGroup(groupId, userId);
+        groupUsersService.assertExistsInGroup(groupId, userId);
         return timeLineRepository.findByGroupAndUser(groupId, userId);
     }
 
+    @Override
     public TimeLineModel addNewTimeLine(TimeLineModel timeLine)
             throws UserNotFoundException, InvalidGroupException, UnsupportedGroupException {
         var groupId = timeLine.groupModel().id();
         var userId = timeLine.user().id();
-        groupService.assertExistsInGroup(groupId, userId);
+        groupUsersService.assertExistsInGroup(groupId, userId);
         return addNewTimeLineSafe(timeLine);
     }
+
 
     private TimeLineModel addNewTimeLineSafe(TimeLineModel newTimeLine)
             throws UserNotFoundException, InvalidGroupException, UnsupportedGroupException {

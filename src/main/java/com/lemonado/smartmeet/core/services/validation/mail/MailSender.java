@@ -1,4 +1,4 @@
-package com.lemonado.smartmeet.core.services.mail;
+package com.lemonado.smartmeet.core.services.validation.mail;
 
 import com.lemonado.smartmeet.core.data.exceptions.CanNotSendMailException;
 import com.lemonado.smartmeet.core.options.MailOptions;

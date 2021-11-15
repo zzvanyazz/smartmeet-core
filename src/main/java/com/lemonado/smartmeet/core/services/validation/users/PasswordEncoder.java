@@ -1,4 +1,4 @@
-package com.lemonado.smartmeet.core.services.users;
+package com.lemonado.smartmeet.core.services.validation.users;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

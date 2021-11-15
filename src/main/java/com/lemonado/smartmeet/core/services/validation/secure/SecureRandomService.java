@@ -1,4 +1,4 @@
-package com.lemonado.smartmeet.core.services.secure;
+package com.lemonado.smartmeet.core.services.validation.secure;
 
 import org.springframework.stereotype.Service;
 

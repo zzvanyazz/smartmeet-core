@@ -1,21 +1,21 @@
-package com.lemonado.smartmeet.core.services.mail;
+package com.lemonado.smartmeet.core.services.impl.mail;
 
-import com.lemonado.smartmeet.core.data.exceptions.CanNotSendMailException;
 import com.lemonado.smartmeet.core.data.models.roles.RoleModel;
+import com.lemonado.smartmeet.core.services.base.mail.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MailService {
+public class MailServiceImpl implements MailService {
 
     @Autowired
     private MailSender mailSender;
 
     @Autowired
-    private MailContentService mailContentService;
+    private MailContentServiceImpl mailContentService;
 
-
-    public void sendRegistrationMessage(String code, String email, RoleModel roleModel) throws CanNotSendMailException {
+    @Override
+    public void sendRegistrationMessage(String code, String email, RoleModel roleModel) {
         var content = mailContentService.createRegistrationContent(
                 roleModel.name(),
                 roleModel.description(),

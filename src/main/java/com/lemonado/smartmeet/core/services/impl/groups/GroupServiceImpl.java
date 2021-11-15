@@ -1,4 +1,4 @@
-package com.lemonado.smartmeet.core.services.groups;
+package com.lemonado.smartmeet.core.services.impl.groups;
 
 import com.lemonado.smartmeet.core.data.exceptions.UserNotFoundException;
 import com.lemonado.smartmeet.core.data.exceptions.group.InvalidGroupException;
@@ -7,8 +7,9 @@ import com.lemonado.smartmeet.core.data.models.group.GroupModel;
 import com.lemonado.smartmeet.core.data.models.group.GroupModelBuilder;
 import com.lemonado.smartmeet.core.options.SecureOptions;
 import com.lemonado.smartmeet.core.repositories.GroupRepository;
-import com.lemonado.smartmeet.core.services.secure.SecureRandomService;
-import com.lemonado.smartmeet.core.services.users.UserService;
+import com.lemonado.smartmeet.core.services.base.groups.GroupService;
+import com.lemonado.smartmeet.core.services.impl.secure.SecureRandomService;
+import com.lemonado.smartmeet.core.services.impl.users.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Set;
 
 @Service
-public class GroupService {
+public class GroupServiceImpl implements GroupService {
 
     @Autowired
     private SecureOptions secureOptions;
@@ -29,8 +30,9 @@ public class GroupService {
     private GroupRepository groupRepository;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
+    @Override
     public GroupModel createGroup(long creatorId, @NotNull String name)
             throws NoSuchAlgorithmException, UserNotFoundException {
         var creator = userService.getUser(creatorId);
@@ -45,6 +47,7 @@ public class GroupService {
         return groupRepository.save(groupModel);
     }
 
+    @Override
     public GroupModel updateGroupName(long groupId, String name) throws InvalidGroupException {
         var group = getGroup(groupId);
 
@@ -54,6 +57,7 @@ public class GroupService {
         return groupRepository.save(group);
     }
 
+    @Override
     public GroupModel updateGroupCode(long groupId)
             throws InvalidGroupException, NoSuchAlgorithmException {
         var group = getGroup(groupId);
@@ -64,31 +68,37 @@ public class GroupService {
         return groupRepository.save(group);
     }
 
+    @Override
     public GroupModel getGroup(long groupId)
             throws InvalidGroupException {
         return groupRepository.getGroupById(groupId)
                 .orElseThrow(InvalidGroupException::new);
     }
 
+    @Override
     public GroupModel getGroupByCode(String code) throws InvalidGroupException {
         return groupRepository.getGroupByCode(code)
                 .orElseThrow(InvalidGroupException::new);
     }
 
+    @Override
     public Set<GroupModel> getGroupsByUser(long userId) throws UserNotFoundException {
         userService.assertExists(userId);
         return groupRepository.getGroupsByUser(userId);
     }
 
+    @Override
     public void assertExists(long id) throws InvalidGroupException {
         if (!groupRepository.existsById(id))
             throw new InvalidGroupException();
     }
 
+    @Override
     public boolean existsInGroup(long groupId, long userId) {
         return groupRepository.existsInGroup(groupId, userId);
     }
 
+    @Override
     public void assertCreator(long groupId, long userId)
             throws UnsupportedGroupException, InvalidGroupException, UserNotFoundException {
         assertExists(groupId);

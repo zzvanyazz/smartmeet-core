@@ -1,4 +1,4 @@
-package com.lemonado.smartmeet.core.services.users;
+package com.lemonado.smartmeet.core.services.validation.users;
 
 import com.lemonado.smartmeet.core.data.exceptions.*;
 import com.lemonado.smartmeet.core.data.models.registration.RegistrationModel;
@@ -7,8 +7,11 @@ import com.lemonado.smartmeet.core.data.models.users.UserModel;
 import com.lemonado.smartmeet.core.data.models.users.builders.UserModelBuilder;
 import com.lemonado.smartmeet.core.options.SecureOptions;
 import com.lemonado.smartmeet.core.repositories.RegistrationRepository;
-import com.lemonado.smartmeet.core.services.mail.MailService;
-import com.lemonado.smartmeet.core.services.secure.SecureRandomService;
+import com.lemonado.smartmeet.core.services.base.users.RegistrationService;
+import com.lemonado.smartmeet.core.services.base.users.RoleService;
+import com.lemonado.smartmeet.core.services.base.users.UserService;
+import com.lemonado.smartmeet.core.services.validation.mail.MailServiceImpl;
+import com.lemonado.smartmeet.core.services.validation.secure.SecureRandomService;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class RegistrationService {
+public class RegistrationServiceImpl implements RegistrationService {
 
     @Autowired
     private SecureOptions secureOptions;
@@ -29,7 +32,7 @@ public class RegistrationService {
     private SecureRandomService secureRandomService;
 
     @Autowired
-    private MailService mailService;
+    private MailServiceImpl mailService;
 
     @Autowired
     private RoleService roleService;
@@ -40,7 +43,7 @@ public class RegistrationService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
+    @Override
     public void startUserRegistration(String roleName, List<String> userEmails)
             throws RoleNotFoundException, ActionOnAdminRoleException, RegistrationProblemsException {
         var exceptions = new ArrayList<Exception>();
@@ -59,6 +62,7 @@ public class RegistrationService {
             throw new RegistrationProblemsException(exceptions);
     }
 
+    @Override
     public void startUserRegistration(RoleModel roleModel, String userEmail)
             throws CanNotSendMailException, UserAlreadyRegisteredException {
         if (userService.existsByEmail(userEmail)) {
@@ -82,6 +86,7 @@ public class RegistrationService {
         }
     }
 
+    @Override
     public UserModel register(RegistrationModel registrationModel)
             throws UserAlreadyExistsException, CanNotCreateUserException, RegistrationCodeNotFoundException {
         var reg = registrationRepository
