@@ -5,6 +5,7 @@ import com.lemonado.smartmeet.core.data.exceptions.group.InvalidGroupException;
 import com.lemonado.smartmeet.core.data.exceptions.group.UnsupportedGroupException;
 import com.lemonado.smartmeet.core.data.models.group.GroupModel;
 import com.lemonado.smartmeet.core.data.models.group.GroupUserModel;
+import com.lemonado.smartmeet.core.services.base.groups.GroupService;
 import com.lemonado.smartmeet.core.services.base.groups.GroupUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ import java.util.Set;
 public class GroupUsersServiceValidation implements GroupUsersService {
 
     @Autowired
-    private GroupServiceValidation groupService;
+    private GroupService groupService;
 
     private final GroupUsersService groupUsersService;
 

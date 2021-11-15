@@ -1,17 +1,16 @@
 package com.lemonado.smartmeet.core.services.impl.groups;
 
 import com.lemonado.smartmeet.core.data.exceptions.CanNotCreateGroupException;
-import com.lemonado.smartmeet.core.data.exceptions.CanNotCreateUserException;
 import com.lemonado.smartmeet.core.data.exceptions.UserNotFoundException;
 import com.lemonado.smartmeet.core.data.exceptions.group.InvalidGroupException;
 import com.lemonado.smartmeet.core.data.exceptions.group.UnsupportedGroupException;
 import com.lemonado.smartmeet.core.data.models.group.GroupModel;
-import com.lemonado.smartmeet.core.data.models.group.GroupModelBuilder;
+import com.lemonado.smartmeet.core.data.models.group.builder.GroupModelBuilder;
 import com.lemonado.smartmeet.core.options.SecureOptions;
 import com.lemonado.smartmeet.core.repositories.GroupRepository;
 import com.lemonado.smartmeet.core.services.base.groups.GroupService;
+import com.lemonado.smartmeet.core.services.base.users.UserService;
 import com.lemonado.smartmeet.core.services.impl.secure.SecureRandomService;
-import com.lemonado.smartmeet.core.services.impl.users.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +31,7 @@ public class GroupServiceImpl implements GroupService {
     private GroupRepository groupRepository;
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
 
     @Override

@@ -7,6 +7,7 @@ import com.lemonado.smartmeet.core.data.models.users.UserModel;
 import com.lemonado.smartmeet.core.data.models.users.builders.UserModelBuilder;
 import com.lemonado.smartmeet.core.options.SecureOptions;
 import com.lemonado.smartmeet.core.repositories.RegistrationRepository;
+import com.lemonado.smartmeet.core.services.base.mail.MailService;
 import com.lemonado.smartmeet.core.services.base.users.RegistrationService;
 import com.lemonado.smartmeet.core.services.base.users.RoleService;
 import com.lemonado.smartmeet.core.services.base.users.UserService;
@@ -32,7 +33,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     private SecureRandomService secureRandomService;
 
     @Autowired
-    private MailServiceImpl mailService;
+    private MailService mailService;
 
     @Autowired
     private RoleService roleService;

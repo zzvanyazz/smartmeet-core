@@ -23,7 +23,7 @@ public interface GroupService {
      * @throws UserNotFoundException      Can not find creator by id.
      */
     GroupModel createGroup(long creatorId, String name)
-            throws UserNotFoundException, CanNotCreateGroupException;
+            throws UserNotFoundException, CanNotCreateGroupException, GroupNameAlreadyExists;
 
     /**
      * Changing group name by group id
@@ -54,7 +54,7 @@ public interface GroupService {
      */
     GroupModel getGroup(long groupId)
             throws InvalidGroupException;
-    
+
     GroupModel getGroupByCode(String code) throws InvalidGroupException;
 
     Set<GroupModel> getGroupsByUser(long userId) throws UserNotFoundException;

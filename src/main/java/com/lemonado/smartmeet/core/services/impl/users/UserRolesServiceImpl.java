@@ -4,6 +4,7 @@ import com.lemonado.smartmeet.core.data.exceptions.RoleNotFoundException;
 import com.lemonado.smartmeet.core.data.models.roles.RoleModel;
 import com.lemonado.smartmeet.core.data.models.users.UserRoleModel;
 import com.lemonado.smartmeet.core.repositories.UserRolesModelRepository;
+import com.lemonado.smartmeet.core.services.base.users.RoleService;
 import com.lemonado.smartmeet.core.services.base.users.UserRolesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class UserRolesServiceImpl implements UserRolesService {
     private UserRolesModelRepository userRolesModelRepository;
 
     @Autowired
-    private RoleServiceImpl roleService;
+    private RoleService roleService;
 
 
     @Override

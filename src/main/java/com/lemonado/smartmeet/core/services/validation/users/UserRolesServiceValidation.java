@@ -7,6 +7,7 @@ import com.lemonado.smartmeet.core.data.models.roles.RoleModel;
 import com.lemonado.smartmeet.core.data.models.users.UserRoleModel;
 import com.lemonado.smartmeet.core.services.base.users.RoleService;
 import com.lemonado.smartmeet.core.services.base.users.UserRolesService;
+import com.lemonado.smartmeet.core.services.base.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public class UserRolesServiceValidation implements UserRolesService {
 
     @Autowired
-    private UserServiceValidation userService;
+    private UserService userService;
 
     @Autowired
     private RoleService roleService;

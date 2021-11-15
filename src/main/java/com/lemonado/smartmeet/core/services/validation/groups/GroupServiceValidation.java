@@ -9,6 +9,7 @@ import com.lemonado.smartmeet.core.data.exceptions.group.UnsupportedGroupExcepti
 import com.lemonado.smartmeet.core.data.models.group.GroupModel;
 import com.lemonado.smartmeet.core.repositories.GroupRepository;
 import com.lemonado.smartmeet.core.services.base.groups.GroupService;
+import com.lemonado.smartmeet.core.services.base.users.UserService;
 import com.lemonado.smartmeet.core.services.validation.users.UserServiceValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class GroupServiceValidation implements GroupService {
     private GroupRepository groupRepository;
 
     @Autowired
-    private UserServiceValidation userService;
+    private UserService userService;
 
     private final GroupService groupService;
 
@@ -33,16 +34,22 @@ public class GroupServiceValidation implements GroupService {
     }
 
     @Override
-    public GroupModel createGroup(long creatorId, @NotNull String name)
-            throws UserNotFoundException, CanNotCreateGroupException {
-        //TODO: check name
+    public GroupModel createGroup(long creatorId, String name)
+            throws UserNotFoundException, CanNotCreateGroupException, GroupNameAlreadyExists {
+        if (groupRepository.getGroupsByUser(creatorId).stream()
+                .anyMatch(groupModel -> groupModel.name().equals(name)))
+            throw new GroupNameAlreadyExists();
         return groupService.createGroup(creatorId, name);
     }
 
     @Override
     public GroupModel updateGroupName(long groupId, String name)
             throws InvalidGroupException, GroupNameAlreadyExists {
-        //TODO: check name
+        if (groupRepository.getGroupById(groupId)
+                .orElseThrow(InvalidGroupException::new)
+                .name()
+                .equals(name))
+            throw new GroupNameAlreadyExists();
         return groupService.updateGroupName(groupId, name);
     }
 

@@ -1,5 +1,7 @@
-package com.lemonado.smartmeet.core.data.models.group;
+package com.lemonado.smartmeet.core.data.models.group.builder;
 
+import com.lemonado.smartmeet.core.data.models.group.GroupModel;
+import com.lemonado.smartmeet.core.data.models.group.GroupUserModel;
 import com.lemonado.smartmeet.core.data.models.users.UserModel;
 
 import java.util.HashSet;

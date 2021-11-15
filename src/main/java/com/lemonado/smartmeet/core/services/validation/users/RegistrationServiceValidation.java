@@ -4,20 +4,11 @@ import com.lemonado.smartmeet.core.data.exceptions.*;
 import com.lemonado.smartmeet.core.data.models.registration.RegistrationModel;
 import com.lemonado.smartmeet.core.data.models.roles.RoleModel;
 import com.lemonado.smartmeet.core.data.models.users.UserModel;
-import com.lemonado.smartmeet.core.data.models.users.builders.UserModelBuilder;
-import com.lemonado.smartmeet.core.options.SecureOptions;
-import com.lemonado.smartmeet.core.repositories.RegistrationRepository;
-import com.lemonado.smartmeet.core.services.base.secure.SecureRandomService;
 import com.lemonado.smartmeet.core.services.base.users.RegistrationService;
-import com.lemonado.smartmeet.core.services.base.users.RoleService;
 import com.lemonado.smartmeet.core.services.base.users.UserService;
-import com.lemonado.smartmeet.core.services.impl.mail.MailServiceImpl;
-import com.lemonado.smartmeet.core.services.impl.users.PasswordEncoder;
-import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

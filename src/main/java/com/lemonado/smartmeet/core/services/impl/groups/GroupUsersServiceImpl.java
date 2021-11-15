@@ -8,7 +8,9 @@ import com.lemonado.smartmeet.core.data.models.group.GroupModel;
 import com.lemonado.smartmeet.core.data.models.group.GroupUserModel;
 import com.lemonado.smartmeet.core.data.models.group.builder.GroupUserBuilder;
 import com.lemonado.smartmeet.core.repositories.GroupUsersRepository;
+import com.lemonado.smartmeet.core.services.base.groups.GroupService;
 import com.lemonado.smartmeet.core.services.base.groups.GroupUsersService;
+import com.lemonado.smartmeet.core.services.base.users.UserService;
 import com.lemonado.smartmeet.core.services.impl.users.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,10 +26,10 @@ public class GroupUsersServiceImpl implements GroupUsersService {
     private GroupUsersRepository groupUsersRepository;
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @Autowired
-    private GroupServiceImpl groupService;
+    private GroupService groupService;
 
 
     @Override
