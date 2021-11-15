@@ -72,12 +72,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserModel createNewUser(UserModel newUserModel)
-            throws UserAlreadyExistsException, CanNotCreateUserException {
-        var username = newUserModel.username();
-        if (userModelRepository.existsByName(username))
-            throw new UserAlreadyExistsException(username);
-
+    public UserModel createNewUser(UserModel newUserModel) throws CanNotCreateUserException {
         var user = userModelRepository.createUser(newUserModel);
         return user.orElseThrow(CanNotCreateUserException::new);
     }

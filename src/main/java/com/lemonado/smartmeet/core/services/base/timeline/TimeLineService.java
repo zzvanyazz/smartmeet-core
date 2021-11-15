@@ -3,6 +3,7 @@ package com.lemonado.smartmeet.core.services.base.timeline;
 import com.lemonado.smartmeet.core.data.exceptions.UserNotFoundException;
 import com.lemonado.smartmeet.core.data.exceptions.group.InvalidGroupException;
 import com.lemonado.smartmeet.core.data.exceptions.group.UnsupportedGroupException;
+import com.lemonado.smartmeet.core.data.exceptions.timeLine.InvalidTimeLineException;
 import com.lemonado.smartmeet.core.data.models.timeline.TimeLineModel;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,6 @@ public interface TimeLineService {
             throws InvalidGroupException, UserNotFoundException, UnsupportedGroupException;
 
     TimeLineModel addNewTimeLine(TimeLineModel timeLine)
-            throws UserNotFoundException, InvalidGroupException, UnsupportedGroupException;
+            throws UserNotFoundException, InvalidGroupException, UnsupportedGroupException, InvalidTimeLineException;
 
 }

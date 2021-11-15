@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public interface UserRolesService {
 
-    List<UserRoleModel> streamUserRoles(long userId) throws UserNotFoundException;
+    List<UserRoleModel> getUserRoles(long userId) throws UserNotFoundException;
 
     void assignUserRole(long userId, long roleId)
             throws UserNotFoundException, RoleNotFoundException, ActionOnAdminRoleException;
@@ -20,6 +20,6 @@ public interface UserRolesService {
     void removeAssignUserRole(long userId, long roleId)
             throws UserNotFoundException, RoleNotFoundException, ActionOnAdminRoleException;
 
-    List<RoleModel> getUserRoles(long userId) throws UserNotFoundException, RoleNotFoundException;
+    List<RoleModel> getRoles(long userId) throws UserNotFoundException, RoleNotFoundException;
 
 }

@@ -17,7 +17,7 @@ public interface GroupUsersService {
             throws InvalidGroupException;
 
     GroupModel registerUserToGroup(long userId, String code)
-            throws InvalidGroupException, UserNotFoundException;
+            throws InvalidGroupException, UserNotFoundException, UnsupportedGroupException;
 
     void removeUsers(long groupId, Set<Long> users)
             throws InvalidGroupException;

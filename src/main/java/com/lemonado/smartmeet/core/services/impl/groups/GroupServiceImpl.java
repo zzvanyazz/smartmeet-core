@@ -1,5 +1,7 @@
 package com.lemonado.smartmeet.core.services.impl.groups;
 
+import com.lemonado.smartmeet.core.data.exceptions.CanNotCreateGroupException;
+import com.lemonado.smartmeet.core.data.exceptions.CanNotCreateUserException;
 import com.lemonado.smartmeet.core.data.exceptions.UserNotFoundException;
 import com.lemonado.smartmeet.core.data.exceptions.group.InvalidGroupException;
 import com.lemonado.smartmeet.core.data.exceptions.group.UnsupportedGroupException;
@@ -32,9 +34,10 @@ public class GroupServiceImpl implements GroupService {
     @Autowired
     private UserServiceImpl userService;
 
+
     @Override
     public GroupModel createGroup(long creatorId, @NotNull String name)
-            throws NoSuchAlgorithmException, UserNotFoundException {
+            throws CanNotCreateGroupException, UserNotFoundException {
         var creator = userService.getUser(creatorId);
 
         var code = generateInviteCode();
@@ -59,7 +62,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupModel updateGroupCode(long groupId)
-            throws InvalidGroupException, NoSuchAlgorithmException {
+            throws InvalidGroupException, CanNotCreateGroupException {
         var group = getGroup(groupId);
         var code = generateInviteCode();
         group = GroupModelBuilder.from(group)
@@ -107,9 +110,13 @@ public class GroupServiceImpl implements GroupService {
             throw new UnsupportedGroupException();
     }
 
-    private String generateInviteCode() throws NoSuchAlgorithmException {
+    private String generateInviteCode() throws CanNotCreateGroupException {
         var length = secureOptions.getGroupCodeLength();
-        return secureRandomService.generateAlphaNumeric(length);
+        try {
+            return secureRandomService.generateAlphaNumeric(length);
+        } catch (NoSuchAlgorithmException e) {
+            throw new CanNotCreateGroupException();
+        }
     }
 
 

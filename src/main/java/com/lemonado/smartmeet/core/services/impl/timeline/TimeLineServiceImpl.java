@@ -22,47 +22,32 @@ public class TimeLineServiceImpl implements TimeLineService {
     @Autowired
     private TimeLineRepository timeLineRepository;
 
-    @Autowired
-    private GroupUsersService groupUsersService;
-
-    @Autowired
-    private GroupService groupService;
-
 
     @Override
-    public List<TimeLineModel> getTimeLines(long groupId) throws InvalidGroupException {
-        groupService.assertExists(groupId);
+    public List<TimeLineModel> getTimeLines(long groupId) {
         return timeLineRepository.findByGroup(groupId);
     }
 
     @Override
-    public List<TimeLineModel> getTimeLines(long groupId, long userId)
-            throws InvalidGroupException, UserNotFoundException, UnsupportedGroupException {
-        groupUsersService.assertExistsInGroup(groupId, userId);
+    public List<TimeLineModel> getTimeLines(long groupId, long userId) {
+
         return timeLineRepository.findByGroupAndUser(groupId, userId);
     }
 
     @Override
-    public TimeLineModel addNewTimeLine(TimeLineModel timeLine)
-            throws UserNotFoundException, InvalidGroupException, UnsupportedGroupException {
-        var groupId = timeLine.groupModel().id();
-        var userId = timeLine.user().id();
-        groupUsersService.assertExistsInGroup(groupId, userId);
-        return addNewTimeLineSafe(timeLine);
-    }
-
-
-    private TimeLineModel addNewTimeLineSafe(TimeLineModel newTimeLine)
-            throws UserNotFoundException, InvalidGroupException, UnsupportedGroupException {
+    public TimeLineModel addNewTimeLine(TimeLineModel newTimeLine) {
         var groupId = newTimeLine.groupModel().id();
         var userId = newTimeLine.user().id();
-        var timeLines = getTimeLines(groupId, userId).stream()
+
+        var timeLines = getTimeLines(groupId, userId)
+                .stream()
                 .filter(newTimeLine::intersects)
                 .sorted(Comparator.comparing(TimeLineModel::startDate))
                 .collect(Collectors.toList());
 
         if (!timeLines.isEmpty())
             resolveIntersect(timeLines, newTimeLine);
+
         return timeLineRepository.save(newTimeLine);
     }
 

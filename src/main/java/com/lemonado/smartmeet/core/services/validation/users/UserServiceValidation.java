@@ -14,61 +14,49 @@ import javax.mail.AuthenticationFailedException;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceValidation implements UserService {
 
     @Autowired
     private UserModelRepository userModelRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
+    public UserServiceValidation(UserService userService) {
+        this.userService = userService;
+    }
 
     public UserModel login(String username, String password) throws LoginFailedException {
-        var user = userModelRepository
-                .findLive(username.toLowerCase())
-                .orElseThrow(LoginFailedException::new);
-
-        if (!passwordEncoder.matches(password, user.passwordHash())) {
-            throw new LoginFailedException();
-        }
-        return user;
+        return userService.login(username, password);
     }
 
     @Override
     public UserModel findActiveUser(long userId) throws AuthenticationFailedException {
-        return userModelRepository
-                .findActive(userId)
-                .orElseThrow(AuthenticationFailedException::new);
+        return userService.findActiveUser(userId);
     }
 
     @Override
     public UserModel findActiveUser(String username) throws UserNotFoundException {
-        return userModelRepository
-                .findActive(username)
-                .orElseThrow(UserNotFoundException::new);
+        return userService.findActiveUser(username);
     }
 
     @Override
     public List<UserModel> getUsers() {
-        return userModelRepository.getAll();
+        return userService.getUsers();
     }
 
     @Override
     public boolean existsByEmail(String email) {
-        return userModelRepository.existsByEmail(email);
+        return userService.existsByEmail(email);
     }
 
     @Override
     public UserModel getUser(long userId) throws UserNotFoundException {
-        return userModelRepository
-                .getUser(userId)
-                .orElseThrow(UserNotFoundException::new);
+        return userService.getUser(userId);
     }
 
     @Override
     public void assertExists(long id) throws UserNotFoundException {
-        if (!userModelRepository.existsById(id))
-            throw new UserNotFoundException();
+        userService.assertExists(id);
     }
 
     @Override
@@ -78,8 +66,7 @@ public class UserServiceImpl implements UserService {
         if (userModelRepository.existsByName(username))
             throw new UserAlreadyExistsException(username);
 
-        var user = userModelRepository.createUser(newUserModel);
-        return user.orElseThrow(CanNotCreateUserException::new);
+        return userService.createNewUser(newUserModel);
     }
 
 }

@@ -63,11 +63,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
-    public void startUserRegistration(RoleModel roleModel, String userEmail)
-            throws CanNotSendMailException, UserAlreadyRegisteredException {
-        if (userService.existsByEmail(userEmail)) {
-            throw new UserAlreadyRegisteredException();
-        }
+    public void startUserRegistration(RoleModel roleModel, String userEmail) throws CanNotSendMailException {
         if (registrationRepository.existsByEmail(userEmail)) {
             registrationRepository.deleteByEmail(userEmail);
         }

@@ -2,7 +2,7 @@ package com.lemonado.smartmeet.core.data.exceptions;
 
 import java.util.List;
 
-public class RegistrationProblemsException extends RuntimeException {
+public class RegistrationProblemsException extends Exception {
 
     private List<Exception> exceptions;
 

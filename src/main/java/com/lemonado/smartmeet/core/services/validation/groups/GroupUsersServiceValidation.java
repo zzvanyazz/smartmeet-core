@@ -3,12 +3,9 @@ package com.lemonado.smartmeet.core.services.validation.groups;
 import com.lemonado.smartmeet.core.data.exceptions.UserNotFoundException;
 import com.lemonado.smartmeet.core.data.exceptions.group.InvalidGroupException;
 import com.lemonado.smartmeet.core.data.exceptions.group.UnsupportedGroupException;
-import com.lemonado.smartmeet.core.data.models.group.AddedUserStatus;
 import com.lemonado.smartmeet.core.data.models.group.GroupModel;
 import com.lemonado.smartmeet.core.data.models.group.GroupUserModel;
-import com.lemonado.smartmeet.core.repositories.GroupUsersRepository;
 import com.lemonado.smartmeet.core.services.base.groups.GroupUsersService;
-import com.lemonado.smartmeet.core.services.validation.users.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +31,7 @@ public class GroupUsersServiceValidation implements GroupUsersService {
 
     @Override
     public GroupModel registerUserToGroup(long userId, String code)
-            throws InvalidGroupException, UserNotFoundException {
+            throws InvalidGroupException, UserNotFoundException, UnsupportedGroupException {
         var groupId = groupService.getGroupByCode(code).id();
         groupService.assertCreator(groupId, userId);
 
@@ -54,7 +51,13 @@ public class GroupUsersServiceValidation implements GroupUsersService {
     }
 
     private void clenIds(long groupId, Set<Long> users) {
-        users.removeIf(id -> !existsInGroup(groupId, id));
+        users.removeIf(id -> {
+            try {
+                return !existsInGroup(groupId, id);
+            } catch (InvalidGroupException | UserNotFoundException ignored) {
+                return true;
+            }
+        });
     }
 
     @Override

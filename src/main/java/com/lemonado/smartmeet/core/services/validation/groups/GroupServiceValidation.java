@@ -1,15 +1,15 @@
 package com.lemonado.smartmeet.core.services.validation.groups;
 
+import com.lemonado.smartmeet.core.data.exceptions.CanNotCreateGroupException;
+import com.lemonado.smartmeet.core.data.exceptions.CanNotCreateUserException;
 import com.lemonado.smartmeet.core.data.exceptions.UserNotFoundException;
+import com.lemonado.smartmeet.core.data.exceptions.group.GroupNameAlreadyExists;
 import com.lemonado.smartmeet.core.data.exceptions.group.InvalidGroupException;
 import com.lemonado.smartmeet.core.data.exceptions.group.UnsupportedGroupException;
 import com.lemonado.smartmeet.core.data.models.group.GroupModel;
-import com.lemonado.smartmeet.core.data.models.group.GroupModelBuilder;
-import com.lemonado.smartmeet.core.options.SecureOptions;
 import com.lemonado.smartmeet.core.repositories.GroupRepository;
 import com.lemonado.smartmeet.core.services.base.groups.GroupService;
-import com.lemonado.smartmeet.core.services.validation.secure.SecureRandomService;
-import com.lemonado.smartmeet.core.services.validation.users.UserServiceImpl;
+import com.lemonado.smartmeet.core.services.validation.users.UserServiceValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class GroupServiceValidation implements GroupService {
     private GroupRepository groupRepository;
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserServiceValidation userService;
 
     private final GroupService groupService;
 
@@ -34,20 +34,21 @@ public class GroupServiceValidation implements GroupService {
 
     @Override
     public GroupModel createGroup(long creatorId, @NotNull String name)
-            throws NoSuchAlgorithmException, UserNotFoundException {
+            throws UserNotFoundException, CanNotCreateGroupException {
         //TODO: check name
         return groupService.createGroup(creatorId, name);
     }
 
     @Override
-    public GroupModel updateGroupName(long groupId, String name) throws InvalidGroupException {
+    public GroupModel updateGroupName(long groupId, String name)
+            throws InvalidGroupException, GroupNameAlreadyExists {
         //TODO: check name
         return groupService.updateGroupName(groupId, name);
     }
 
     @Override
     public GroupModel updateGroupCode(long groupId)
-            throws InvalidGroupException, NoSuchAlgorithmException {
+            throws InvalidGroupException, CanNotCreateGroupException {
         return groupService.updateGroupCode(groupId);
     }
 
