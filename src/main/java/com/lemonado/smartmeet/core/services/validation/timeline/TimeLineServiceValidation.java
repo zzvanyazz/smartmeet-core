@@ -3,21 +3,17 @@ package com.lemonado.smartmeet.core.services.validation.timeline;
 import com.lemonado.smartmeet.core.data.exceptions.UserNotFoundException;
 import com.lemonado.smartmeet.core.data.exceptions.group.InvalidGroupException;
 import com.lemonado.smartmeet.core.data.exceptions.group.UnsupportedGroupException;
-import com.lemonado.smartmeet.core.data.exceptions.timeLine.InvalidTimeLineException;
+import com.lemonado.smartmeet.core.data.exceptions.timeline.InvalidTimeLineException;
 import com.lemonado.smartmeet.core.data.models.group.GroupModel;
 import com.lemonado.smartmeet.core.data.models.timeline.TimeLineModel;
-import com.lemonado.smartmeet.core.data.models.timeline.bilders.TimeLineBuilder;
-import com.lemonado.smartmeet.core.repositories.TimeLineRepository;
 import com.lemonado.smartmeet.core.services.base.groups.GroupService;
 import com.lemonado.smartmeet.core.services.base.groups.GroupUsersService;
 import com.lemonado.smartmeet.core.services.base.timeline.TimeLineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TimeLineServiceValidation implements TimeLineService {

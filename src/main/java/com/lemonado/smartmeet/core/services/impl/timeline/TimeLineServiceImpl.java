@@ -40,22 +40,22 @@ public class TimeLineServiceImpl implements TimeLineService {
                 .sorted(Comparator.comparing(TimeLineModel::startDate))
                 .collect(Collectors.toList());
 
-        if (!timeLines.isEmpty())
+        if (!timeLines.isEmpty()) {
             resolveIntersect(timeLines, newTimeLine);
-
+        }
         return timeLineRepository.save(newTimeLine);
     }
 
     private void resolveIntersect(List<TimeLineModel> intersected, TimeLineModel newTimeLine) {
-        var firstIntersectTimeLine = intersected.remove(0);
-        var lastIntersectTimeLine = intersected.remove(intersected.size() - 1);
+        var firstIntersect = intersected.remove(0);
+        var lastIntersect = intersected.remove(intersected.size() - 1);
 
-        var firstTimeLine = TimeLineBuilder.from(firstIntersectTimeLine)
+        var firstTimeLine = TimeLineBuilder.from(firstIntersect)
                 .withoutId()
                 .withEndDate(newTimeLine.startDate())
                 .build();
 
-        var endTimeLine = TimeLineBuilder.from(lastIntersectTimeLine)
+        var endTimeLine = TimeLineBuilder.from(lastIntersect)
                 .withoutId()
                 .withStartDate(newTimeLine.endDate())
                 .build();

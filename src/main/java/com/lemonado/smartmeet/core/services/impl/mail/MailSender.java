@@ -40,6 +40,7 @@ public class MailSender extends JavaMailSenderImpl {
             message.setText(content);
             send(message);
         } catch (Exception e) {
+            //TODO: add log
             throw new CanNotSendMailException(email);
         }
     }

@@ -62,8 +62,9 @@ public class UserRolesServiceValidation implements UserRolesService {
         userService.assertExists(userId);
         roleService.ensureExists(roleId);
         var role = roleService.getById(roleId);
-        if (role.name().equals(RoleModel.ADMIN))
+        if (role.name().equals(RoleModel.ADMIN)) {
             throw new ActionOnAdminRoleException();
+        }
     }
 
 }

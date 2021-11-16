@@ -35,7 +35,7 @@ public class TimeLineBuilder {
         this.timeLineType = timeLineModel.timeLineType();
     }
 
-    public TimeLineBuilder() {
+    private TimeLineBuilder() {
     }
 
     public TimeLineBuilder withoutId() {

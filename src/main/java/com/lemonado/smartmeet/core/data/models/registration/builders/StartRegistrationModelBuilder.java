@@ -3,12 +3,10 @@ package com.lemonado.smartmeet.core.data.models.registration.builders;
 import com.lemonado.smartmeet.core.data.models.registration.StartRegistrationModel;
 
 public final class StartRegistrationModelBuilder {
-    String registrationCode;
-    String email;
-    long roleId;
 
-    public StartRegistrationModelBuilder() {
-    }
+    private String registrationCode;
+    private String email;
+    private long roleId;
 
 
     public StartRegistrationModelBuilder withRegistrationCode(String registrationCode) {

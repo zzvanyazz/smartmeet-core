@@ -18,11 +18,11 @@ public record RoleModel(
     }
 
     public static final class RoleModelBuilder {
-        long id;
-        String name;
-        String description;
-        OffsetDateTime createTimestamp;
-        OffsetDateTime updateTimestamp;
+        private long id;
+        private String name;
+        private String description;
+        private OffsetDateTime createTimestamp;
+        private OffsetDateTime updateTimestamp;
 
         private RoleModelBuilder() {
         }

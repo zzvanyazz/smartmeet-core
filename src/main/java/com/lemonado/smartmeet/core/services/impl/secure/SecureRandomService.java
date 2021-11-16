@@ -24,8 +24,7 @@ public final class SecureRandomService {
         var random = SecureRandom.getInstance(ALGORITHM);
         var bound = (int) 'z' + 1;
 
-        return Stream
-                .generate(() -> (char) random.nextInt(bound))
+        return Stream.generate(() -> (char) random.nextInt(bound))
                 .filter(x -> (x >= '0' && x <= '9') || x >= 'a' || (x >= 'A' && x <= 'Z'))
                 .limit(length)
                 .map(String::valueOf)

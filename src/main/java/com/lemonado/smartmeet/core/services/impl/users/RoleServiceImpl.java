@@ -44,8 +44,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void ensureExists(long roleId) throws RoleNotFoundException {
-        if (!roleModelRepository.isExists(roleId))
+        if (!roleModelRepository.isExists(roleId)) {
             throw new RoleNotFoundException();
+        }
     }
 
 }

@@ -2,7 +2,6 @@ package com.lemonado.smartmeet.core.services.impl.users;
 
 import com.lemonado.smartmeet.core.data.exceptions.CanNotCreateUserException;
 import com.lemonado.smartmeet.core.data.exceptions.LoginFailedException;
-import com.lemonado.smartmeet.core.data.exceptions.UserAlreadyExistsException;
 import com.lemonado.smartmeet.core.data.exceptions.UserNotFoundException;
 import com.lemonado.smartmeet.core.data.models.users.UserModel;
 import com.lemonado.smartmeet.core.repositories.UserModelRepository;
@@ -67,8 +66,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void assertExists(long id) throws UserNotFoundException {
-        if (!userModelRepository.existsById(id))
+        if (!userModelRepository.existsById(id)) {
             throw new UserNotFoundException();
+        }
     }
 
     @Override

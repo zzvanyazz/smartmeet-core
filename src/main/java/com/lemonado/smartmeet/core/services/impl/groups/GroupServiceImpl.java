@@ -91,8 +91,9 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void assertExists(long id) throws InvalidGroupException {
-        if (!groupRepository.existsById(id))
+        if (!groupRepository.existsById(id)) {
             throw new InvalidGroupException();
+        }
     }
 
     @Override
@@ -105,8 +106,9 @@ public class GroupServiceImpl implements GroupService {
             throws UnsupportedGroupException, InvalidGroupException, UserNotFoundException {
         assertExists(groupId);
         userService.assertExists(userId);
-        if (!existsInGroup(groupId, userId))
+        if (!existsInGroup(groupId, userId)) {
             throw new UnsupportedGroupException();
+        }
     }
 
     private String generateInviteCode() throws CanNotCreateGroupException {
@@ -114,6 +116,7 @@ public class GroupServiceImpl implements GroupService {
         try {
             return secureRandomService.generateAlphaNumeric(length);
         } catch (NoSuchAlgorithmException e) {
+            //TODO: add log
             throw new CanNotCreateGroupException();
         }
     }

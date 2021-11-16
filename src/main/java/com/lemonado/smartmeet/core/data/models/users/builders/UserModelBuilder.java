@@ -5,6 +5,7 @@ import com.lemonado.smartmeet.core.data.models.users.UserModel;
 import java.time.OffsetDateTime;
 
 public final class UserModelBuilder {
+
     private long id;
     private String username;
     private String email;
@@ -12,8 +13,6 @@ public final class UserModelBuilder {
     private OffsetDateTime deleteTimestamp;
     private OffsetDateTime validTokenTimestamp;
 
-    public UserModelBuilder() {
-    }
 
     public static UserModelBuilder builder() {
         return new UserModelBuilder();

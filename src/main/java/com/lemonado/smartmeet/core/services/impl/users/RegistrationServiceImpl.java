@@ -11,7 +11,6 @@ import com.lemonado.smartmeet.core.services.base.mail.MailService;
 import com.lemonado.smartmeet.core.services.base.users.RegistrationService;
 import com.lemonado.smartmeet.core.services.base.users.RoleService;
 import com.lemonado.smartmeet.core.services.base.users.UserService;
-import com.lemonado.smartmeet.core.services.impl.mail.MailServiceImpl;
 import com.lemonado.smartmeet.core.services.impl.secure.SecureRandomService;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +49,9 @@ public class RegistrationServiceImpl implements RegistrationService {
         var exceptions = new ArrayList<Exception>();
 
         var role = roleService.getByName(roleName);
-        if (role.name().equals(RoleModel.ADMIN))
+        if (role.name().equals(RoleModel.ADMIN)) {
             throw new ActionOnAdminRoleException();
+        }
         for (String userEmail : userEmails) {
             try {
                 startUserRegistration(role, userEmail);
@@ -59,8 +59,9 @@ public class RegistrationServiceImpl implements RegistrationService {
                 exceptions.add(e);
             }
         }
-        if (!exceptions.isEmpty())
+        if (!exceptions.isEmpty()) {
             throw new RegistrationProblemsException(exceptions);
+        }
     }
 
     @Override

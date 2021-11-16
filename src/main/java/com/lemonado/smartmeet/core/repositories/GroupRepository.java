@@ -3,7 +3,6 @@ package com.lemonado.smartmeet.core.repositories;
 import com.lemonado.smartmeet.core.data.models.group.GroupModel;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 

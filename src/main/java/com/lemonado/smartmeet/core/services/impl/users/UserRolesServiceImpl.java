@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class UserRolesServiceImpl implements UserRolesService {
 
     @Autowired
-    private UserRolesModelRepository userRolesModelRepository;
+    private UserRolesModelRepository userRolesRepository;
 
     @Autowired
     private RoleService roleService;
@@ -25,19 +25,21 @@ public class UserRolesServiceImpl implements UserRolesService {
 
     @Override
     public List<UserRoleModel> getUserRoles(long userId) {
-        return userRolesModelRepository.findByUserId(userId);
+        return userRolesRepository.findByUserId(userId);
     }
 
     @Override
     public void assignUserRole(long userId, long roleId) {
-        if (!userRolesModelRepository.isExists(userId, roleId))
-            userRolesModelRepository.saveAssign(userId, roleId);
+        if (!userRolesRepository.isExists(userId, roleId)) {
+            userRolesRepository.saveAssign(userId, roleId);
+        }
     }
 
     @Override
     public void removeAssignUserRole(long userId, long roleId) {
-        if (userRolesModelRepository.isExists(userId, roleId))
-            userRolesModelRepository.removeAssign(userId, roleId);
+        if (userRolesRepository.isExists(userId, roleId)) {
+            userRolesRepository.removeAssign(userId, roleId);
+        }
     }
 
     @Override

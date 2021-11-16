@@ -1,4 +1,4 @@
-package com.lemonado.smartmeet.core.data.exceptions.timeLine;
+package com.lemonado.smartmeet.core.data.exceptions.timeline;
 
 public class InvalidTimeLineException extends Exception {
 

@@ -63,8 +63,9 @@ public class UserServiceValidation implements UserService {
     public UserModel createNewUser(UserModel newUserModel)
             throws UserAlreadyExistsException, CanNotCreateUserException {
         var username = newUserModel.username();
-        if (userModelRepository.existsByName(username))
+        if (userModelRepository.existsByName(username)) {
             throw new UserAlreadyExistsException(username);
+        }
 
         return userService.createNewUser(newUserModel);
     }

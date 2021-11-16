@@ -11,7 +11,6 @@ import com.lemonado.smartmeet.core.repositories.GroupUsersRepository;
 import com.lemonado.smartmeet.core.services.base.groups.GroupService;
 import com.lemonado.smartmeet.core.services.base.groups.GroupUsersService;
 import com.lemonado.smartmeet.core.services.base.users.UserService;
-import com.lemonado.smartmeet.core.services.impl.users.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -96,8 +95,9 @@ public class GroupUsersServiceImpl implements GroupUsersService {
     @Override
     public void assertExistsInGroup(long groupId, long userId)
             throws InvalidGroupException, UnsupportedGroupException, UserNotFoundException {
-        if (existsInGroup(groupId, userId))
+        if (existsInGroup(groupId, userId)) {
             throw new UnsupportedGroupException();
+        }
     }
 
 
