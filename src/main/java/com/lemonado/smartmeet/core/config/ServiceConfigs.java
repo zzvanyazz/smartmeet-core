@@ -20,41 +20,48 @@ import com.lemonado.smartmeet.core.services.validation.users.UserRolesServiceVal
 import com.lemonado.smartmeet.core.services.validation.users.UserServiceValidation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class ServiceConfigs {
 
     @Bean
+    @Primary
     public GroupService getGroupService() {
         return new GroupServiceValidation(
                 new GroupServiceImpl());
     }
 
     @Bean
+    @Primary
     public GroupUsersService getGroupUsersService() {
         return new GroupUsersServiceValidation(
                 new GroupUsersServiceImpl());
     }
 
     @Bean
+    @Primary
     public TimeLineService getTimeLineService() {
         return new TimeLineServiceValidation(
                 new TimeLineServiceImpl());
     }
 
     @Bean
+    @Primary
     public RegistrationService getRegistrationService() {
         return new RegistrationServiceValidation(
                 new RegistrationServiceImpl());
     }
 
     @Bean
+    @Primary
     public UserRolesService getUserRolesService() {
         return new UserRolesServiceValidation(
                 new UserRolesServiceImpl());
     }
 
     @Bean
+    @Primary
     public UserService getUserService() {
         return new UserServiceValidation(
                 new UserServiceImpl());

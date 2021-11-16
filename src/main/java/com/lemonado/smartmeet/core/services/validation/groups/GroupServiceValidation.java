@@ -9,12 +9,13 @@ import com.lemonado.smartmeet.core.data.models.group.GroupModel;
 import com.lemonado.smartmeet.core.repositories.GroupRepository;
 import com.lemonado.smartmeet.core.services.base.groups.GroupService;
 import com.lemonado.smartmeet.core.services.base.users.UserService;
+import com.lemonado.smartmeet.core.services.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
-@Service
+@Validator
 public class GroupServiceValidation implements GroupService {
 
     @Autowired
