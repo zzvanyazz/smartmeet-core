@@ -27,44 +27,38 @@ public class ServiceConfigs {
 
     @Bean
     @Primary
-    public GroupService getGroupService() {
-        return new GroupServiceValidation(
-                new GroupServiceImpl());
+    public GroupService getGroupService(GroupServiceImpl impl) {
+        return new GroupServiceValidation(impl);
     }
 
     @Bean
     @Primary
-    public GroupUsersService getGroupUsersService() {
-        return new GroupUsersServiceValidation(
-                new GroupUsersServiceImpl());
+    public GroupUsersService getGroupUsersService(GroupUsersServiceImpl impl) {
+        return new GroupUsersServiceValidation(impl);
     }
 
     @Bean
     @Primary
-    public TimeLineService getTimeLineService() {
-        return new TimeLineServiceValidation(
-                new TimeLineServiceImpl());
+    public TimeLineService getTimeLineService(TimeLineServiceImpl impl) {
+        return new TimeLineServiceValidation(impl);
     }
 
     @Bean
     @Primary
-    public RegistrationService getRegistrationService() {
-        return new RegistrationServiceValidation(
-                new RegistrationServiceImpl());
+    public RegistrationService getRegistrationService(RegistrationServiceImpl impl) {
+        return new RegistrationServiceValidation(impl);
     }
 
     @Bean
     @Primary
-    public UserRolesService getUserRolesService() {
-        return new UserRolesServiceValidation(
-                new UserRolesServiceImpl());
+    public UserRolesService getUserRolesService(UserRolesServiceImpl impl) {
+        return new UserRolesServiceValidation(impl);
     }
 
     @Bean
     @Primary
-    public UserService getUserService() {
-        return new UserServiceValidation(
-                new UserServiceImpl());
+    public UserService getUserService(UserServiceImpl impl) {
+        return new UserServiceValidation(impl);
     }
 
 }

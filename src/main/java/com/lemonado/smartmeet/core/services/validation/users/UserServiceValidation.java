@@ -1,9 +1,6 @@
 package com.lemonado.smartmeet.core.services.validation.users;
 
-import com.lemonado.smartmeet.core.data.exceptions.CanNotCreateUserException;
-import com.lemonado.smartmeet.core.data.exceptions.LoginFailedException;
-import com.lemonado.smartmeet.core.data.exceptions.UserAlreadyExistsException;
-import com.lemonado.smartmeet.core.data.exceptions.UserNotFoundException;
+import com.lemonado.smartmeet.core.data.exceptions.*;
 import com.lemonado.smartmeet.core.data.models.users.UserModel;
 import com.lemonado.smartmeet.core.repositories.UserModelRepository;
 import com.lemonado.smartmeet.core.services.base.users.UserService;
@@ -25,8 +22,8 @@ public class UserServiceValidation implements UserService {
         this.userService = userService;
     }
 
-    public UserModel login(String username, String password) throws LoginFailedException {
-        return userService.login(username, password);
+    public UserModel login(String email, String password) throws LoginFailedException {
+        return userService.login(email, password);
     }
 
     @Override
@@ -35,8 +32,8 @@ public class UserServiceValidation implements UserService {
     }
 
     @Override
-    public UserModel findActiveUser(String username) throws UserNotFoundException {
-        return userService.findActiveUser(username);
+    public UserModel findActiveUserByEmail(String email) throws AuthenticationFailedException, UserNotFoundException {
+        return userService.findActiveUserByEmail(email);
     }
 
     @Override
@@ -62,11 +59,10 @@ public class UserServiceValidation implements UserService {
     @Override
     public UserModel createNewUser(UserModel newUserModel)
             throws UserAlreadyExistsException, CanNotCreateUserException {
-        var username = newUserModel.username();
-        if (userModelRepository.existsByName(username)) {
-            throw new UserAlreadyExistsException(username);
+        var email = newUserModel.email();
+        if (userModelRepository.existsByEmail(email)) {
+            throw new UserAlreadyExistsException(email);
         }
-
         return userService.createNewUser(newUserModel);
     }
 

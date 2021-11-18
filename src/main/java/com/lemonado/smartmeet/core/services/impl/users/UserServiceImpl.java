@@ -5,6 +5,7 @@ import com.lemonado.smartmeet.core.data.exceptions.LoginFailedException;
 import com.lemonado.smartmeet.core.data.exceptions.UserNotFoundException;
 import com.lemonado.smartmeet.core.data.models.users.UserModel;
 import com.lemonado.smartmeet.core.repositories.UserModelRepository;
+import com.lemonado.smartmeet.core.services.base.users.PasswordEncoder;
 import com.lemonado.smartmeet.core.services.base.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +23,9 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
 
-    public UserModel login(String username, String password) throws LoginFailedException {
+    public UserModel login(String email, String password) throws LoginFailedException {
         var user = userModelRepository
-                .findLive(username.toLowerCase())
+                .findLive(email)
                 .orElseThrow(LoginFailedException::new);
 
         if (!passwordEncoder.matches(password, user.passwordHash())) {
@@ -41,9 +42,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserModel findActiveUser(String username) throws UserNotFoundException {
-        return userModelRepository
-                .findActive(username)
+    public UserModel findActiveUserByEmail(String email) throws UserNotFoundException {
+        return userModelRepository.findLive(email)
                 .orElseThrow(UserNotFoundException::new);
     }
 

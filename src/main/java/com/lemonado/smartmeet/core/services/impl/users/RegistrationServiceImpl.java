@@ -8,6 +8,7 @@ import com.lemonado.smartmeet.core.data.models.users.builders.UserModelBuilder;
 import com.lemonado.smartmeet.core.options.SecureOptions;
 import com.lemonado.smartmeet.core.repositories.RegistrationRepository;
 import com.lemonado.smartmeet.core.services.base.mail.MailService;
+import com.lemonado.smartmeet.core.services.base.users.PasswordEncoder;
 import com.lemonado.smartmeet.core.services.base.users.RegistrationService;
 import com.lemonado.smartmeet.core.services.base.users.RoleService;
 import com.lemonado.smartmeet.core.services.base.users.UserService;

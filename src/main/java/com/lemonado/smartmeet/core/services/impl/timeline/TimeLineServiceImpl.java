@@ -48,15 +48,18 @@ public class TimeLineServiceImpl implements TimeLineService {
 
     private void resolveIntersect(List<TimeLineModel> intersected, TimeLineModel newTimeLine) {
         var firstIntersect = intersected.remove(0);
-        var lastIntersect = intersected.remove(intersected.size() - 1);
+        var isSingle = intersected.isEmpty();
+        if (isSingle && firstIntersect.sameRange(newTimeLine)) {
+            timeLineRepository.remove(firstIntersect);
+            return;
+        }
+        var lastIntersect = isSingle ? firstIntersect : intersected.remove(intersected.size() - 1);
 
         var firstTimeLine = TimeLineBuilder.from(firstIntersect)
-                .withoutId()
                 .withEndDate(newTimeLine.startDate())
                 .build();
 
         var endTimeLine = TimeLineBuilder.from(lastIntersect)
-                .withoutId()
                 .withStartDate(newTimeLine.endDate())
                 .build();
 

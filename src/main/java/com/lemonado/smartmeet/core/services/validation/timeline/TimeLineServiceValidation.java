@@ -63,6 +63,11 @@ public class TimeLineServiceValidation implements TimeLineService {
 
         groupUsersService.assertExistsInGroup(groupId, userId);
 
+        var startDate = timeLine.startDate();
+        var endDate = timeLine.endDate();
+        if (startDate.isAfter(endDate) || startDate.equals(endDate))
+            throw new InvalidTimeLineException();
+
         return timeLineService.addNewTimeLine(timeLine);
     }
 

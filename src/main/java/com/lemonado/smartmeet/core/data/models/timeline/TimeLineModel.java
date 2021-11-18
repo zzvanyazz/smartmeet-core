@@ -20,8 +20,13 @@ public record TimeLineModel(
                 timeLineModel.includes(endDate);
     }
 
+    public boolean sameRange(TimeLineModel timeLineModel) {
+        return startDate.equals(timeLineModel.startDate) && endDate.equals(timeLineModel.endDate);
+    }
+
     public boolean includes(LocalDateTime dateTime) {
-        return startDate.isBefore(dateTime) && endDate.isAfter(dateTime);
+        return startDate.isBefore(dateTime) && endDate.isAfter(dateTime) ||
+                (startDate.equals(dateTime) || endDate.equals(dateTime));
     }
 
     public boolean isIncludedIn(TimeLineModel timeLineModel) {
