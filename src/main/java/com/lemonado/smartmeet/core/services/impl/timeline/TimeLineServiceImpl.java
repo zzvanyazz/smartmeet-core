@@ -34,7 +34,15 @@ public class TimeLineServiceImpl implements TimeLineService {
         var groupId = newTimeLine.groupModel().id();
         var userId = newTimeLine.user().id();
 
-        var timeLines = getTimeLines(groupId, userId)
+        var timeLines = getTimeLines(groupId, userId);
+        timeLines.removeIf(timeLine -> {
+            if (timeLine.isIncludedIn(newTimeLine)) {
+                timeLineRepository.remove(newTimeLine);
+                return true;
+            }
+            return false;
+        });
+        timeLines = timeLines
                 .stream()
                 .filter(newTimeLine::intersects)
                 .sorted(Comparator.comparing(TimeLineModel::startDate))
@@ -48,12 +56,12 @@ public class TimeLineServiceImpl implements TimeLineService {
 
     private void resolveIntersect(List<TimeLineModel> intersected, TimeLineModel newTimeLine) {
         var firstIntersect = intersected.remove(0);
-        var isSingle = intersected.isEmpty();
-        if (isSingle && firstIntersect.sameRange(newTimeLine)) {
-            timeLineRepository.remove(firstIntersect);
+        if (intersected.isEmpty()) {
+            resolveOneIntersected(firstIntersect, newTimeLine);
             return;
         }
-        var lastIntersect = isSingle ? firstIntersect : intersected.remove(intersected.size() - 1);
+
+        var lastIntersect = intersected.remove(intersected.size() - 1);
 
         var firstTimeLine = TimeLineBuilder.from(firstIntersect)
                 .withEndDate(newTimeLine.startDate())
@@ -67,6 +75,40 @@ public class TimeLineServiceImpl implements TimeLineService {
 
         timeLineRepository.update(firstTimeLine);
         timeLineRepository.update(endTimeLine);
+    }
+
+    private void resolveOneIntersected(TimeLineModel intersected, TimeLineModel newTimeLine) {
+        if (intersected.sameRange(newTimeLine)) {
+            timeLineRepository.remove(intersected);
+        } else if (intersected.isIncludedIn(newTimeLine)) {
+            timeLineRepository.remove(intersected);
+        } else if (newTimeLine.isIncludedIn(intersected)) {
+            var firstTimeLine = TimeLineBuilder.from(intersected)
+                    .withoutId()
+                    .withEndDate(newTimeLine.startDate())
+                    .build();
+            var endTimeLine = TimeLineBuilder.from(intersected)
+                    .withoutId()
+                    .withStartDate(newTimeLine.endDate())
+                    .build();
+            timeLineRepository.remove(intersected);
+
+            timeLineRepository.save(firstTimeLine);
+            timeLineRepository.save(endTimeLine);
+        } else {
+            resolveIntersected(intersected, newTimeLine);
+        }
+    }
+
+    private void resolveIntersected(TimeLineModel intersected, TimeLineModel newTimeLine) {
+        var intersectedUpdater = TimeLineBuilder.from(intersected);
+        if (newTimeLine.includes(intersected.startDate())) {
+            intersectedUpdater.withStartDate(newTimeLine.endDate());
+        } else if (newTimeLine.includes(newTimeLine.endDate())) {
+            intersectedUpdater.withEndDate(newTimeLine.startDate());
+        }
+        intersected = intersectedUpdater.build();
+        timeLineRepository.update(intersected);
     }
 
 }
