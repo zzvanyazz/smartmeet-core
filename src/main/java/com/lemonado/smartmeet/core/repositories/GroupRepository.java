@@ -11,6 +11,8 @@ public interface GroupRepository {
 
     GroupModel save(GroupModel groupModel);
 
+    GroupModel update(GroupModel groupModel);
+
     boolean existsById(long id);
 
     boolean existsInGroup(long groupId, long userId);
@@ -18,8 +20,6 @@ public interface GroupRepository {
     Optional<GroupModel> getGroupById(long id);
 
     Optional<GroupModel> getGroupByCode(String code);
-
-    GroupModel update(GroupModel groupModel);
 
     Set<GroupModel> getGroupsByUser(long userId);
 

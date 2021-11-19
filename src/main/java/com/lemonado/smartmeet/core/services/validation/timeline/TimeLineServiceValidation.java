@@ -40,10 +40,18 @@ public class TimeLineServiceValidation implements TimeLineService {
     @Override
     public List<TimeLineModel> getTimeLines(long groupId, long userId)
             throws InvalidGroupException, UserNotFoundException, UnsupportedGroupException {
-
         groupUsersService.assertExistsInGroup(groupId, userId);
-
         return timeLineService.getTimeLines(groupId, userId);
+    }
+
+    @Override
+    public TimeLineModel updateTimeLine(TimeLineModel timeLine) {
+        return timeLineService.updateTimeLine(timeLine);
+    }
+
+    @Override
+    public void removeTimeLine(TimeLineModel timeLine) {
+        timeLineService.removeTimeLine(timeLine);
     }
 
     @Override

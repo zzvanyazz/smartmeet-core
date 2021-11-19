@@ -16,6 +16,6 @@ public interface TimeLineRepository {
 
     TimeLineModel update(TimeLineModel timeLineModel);
 
-    TimeLineModel save(TimeLineModel model);
+    TimeLineModel save(TimeLineModel timeLineModel);
 
 }

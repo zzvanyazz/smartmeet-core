@@ -30,6 +30,16 @@ public class TimeLineServiceImpl implements TimeLineService {
     }
 
     @Override
+    public TimeLineModel updateTimeLine(TimeLineModel timeLine) {
+        return addNewTimeLine(timeLine);
+    }
+
+    @Override
+    public void removeTimeLine(TimeLineModel timeLine) {
+        timeLineRepository.remove(timeLine);
+    }
+
+    @Override
     public TimeLineModel addNewTimeLine(TimeLineModel newTimeLine) {
         var groupId = newTimeLine.groupModel().id();
         var userId = newTimeLine.user().id();
@@ -37,7 +47,7 @@ public class TimeLineServiceImpl implements TimeLineService {
         var timeLines = getTimeLines(groupId, userId);
         timeLines.removeIf(timeLine -> {
             if (timeLine.isIncludedIn(newTimeLine)) {
-                timeLineRepository.remove(newTimeLine);
+                removeTimeLine(newTimeLine);
                 return true;
             }
             return false;
@@ -73,15 +83,13 @@ public class TimeLineServiceImpl implements TimeLineService {
 
         intersected.forEach(timeLineRepository::remove);
 
-        timeLineRepository.update(firstTimeLine);
-        timeLineRepository.update(endTimeLine);
+        updateTimeLine(firstTimeLine);
+        updateTimeLine(endTimeLine);
     }
 
     private void resolveOneIntersected(TimeLineModel intersected, TimeLineModel newTimeLine) {
-        if (intersected.sameRange(newTimeLine)) {
-            timeLineRepository.remove(intersected);
-        } else if (intersected.isIncludedIn(newTimeLine)) {
-            timeLineRepository.remove(intersected);
+        if (intersected.sameRange(newTimeLine) || intersected.isIncludedIn(newTimeLine)) {
+            removeTimeLine(intersected);
         } else if (newTimeLine.isIncludedIn(intersected)) {
             var firstTimeLine = TimeLineBuilder.from(intersected)
                     .withoutId()
@@ -91,10 +99,10 @@ public class TimeLineServiceImpl implements TimeLineService {
                     .withoutId()
                     .withStartDate(newTimeLine.endDate())
                     .build();
-            timeLineRepository.remove(intersected);
+            removeTimeLine(intersected);
 
-            timeLineRepository.save(firstTimeLine);
-            timeLineRepository.save(endTimeLine);
+            addNewTimeLine(firstTimeLine);
+            addNewTimeLine(endTimeLine);
         } else {
             resolveIntersected(intersected, newTimeLine);
         }
@@ -108,7 +116,7 @@ public class TimeLineServiceImpl implements TimeLineService {
             intersectedUpdater.withEndDate(newTimeLine.startDate());
         }
         intersected = intersectedUpdater.build();
-        timeLineRepository.update(intersected);
+        addNewTimeLine(intersected);
     }
 
 }

@@ -17,7 +17,12 @@ public interface TimeLineService {
     List<TimeLineModel> getTimeLines(long groupId, long userId)
             throws InvalidGroupException, UserNotFoundException, UnsupportedGroupException;
 
+    TimeLineModel updateTimeLine(TimeLineModel timeLine);
+
+    void removeTimeLine(TimeLineModel timeLine);
+
     TimeLineModel addNewTimeLine(TimeLineModel timeLine)
-            throws UserNotFoundException, InvalidGroupException, UnsupportedGroupException, InvalidTimeLineException;
+            throws UserNotFoundException, InvalidGroupException,
+            UnsupportedGroupException, InvalidTimeLineException;
 
 }

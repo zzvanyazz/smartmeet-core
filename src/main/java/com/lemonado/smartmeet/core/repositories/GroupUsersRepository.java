@@ -9,7 +9,9 @@ import java.util.Optional;
 @Repository
 public interface GroupUsersRepository {
 
-    GroupUserModel save(GroupUserModel userModel);
+    GroupUserModel save(GroupUserModel groupUserModel);
+
+    GroupUserModel update(GroupUserModel groupUserModel);
 
     GroupUserModel remove(GroupUserModel groupUserModel);
 
