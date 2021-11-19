@@ -1,13 +1,14 @@
 package com.lemonado.smartmeet.core.repositories;
 
 import com.lemonado.smartmeet.core.data.models.users.UserModel;
+import com.lemonado.smartmeet.core.repositories.events.OnNewEventListening;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserModelRepository {
+public interface UserRepository {
 
     List<UserModel> getAll();
 
@@ -21,6 +22,7 @@ public interface UserModelRepository {
 
     Optional<UserModel> getUser(long userId);
 
-    Optional<UserModel> createUser(UserModel userModel);
+    @OnNewEventListening
+    UserModel save(UserModel userModel);
 
 }

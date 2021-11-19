@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface RoleModelRepository {
+public interface RoleRepository {
 
     Optional<Long> findId(String name);
 

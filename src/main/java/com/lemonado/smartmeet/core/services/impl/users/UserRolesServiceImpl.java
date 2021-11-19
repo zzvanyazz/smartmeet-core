@@ -4,7 +4,7 @@ import com.lemonado.smartmeet.core.data.exceptions.RoleNotFoundException;
 import com.lemonado.smartmeet.core.data.exceptions.UserNotFoundException;
 import com.lemonado.smartmeet.core.data.models.roles.RoleModel;
 import com.lemonado.smartmeet.core.data.models.users.UserRoleModel;
-import com.lemonado.smartmeet.core.repositories.UserRolesModelRepository;
+import com.lemonado.smartmeet.core.repositories.UserRolesRepository;
 import com.lemonado.smartmeet.core.services.base.users.RoleService;
 import com.lemonado.smartmeet.core.services.base.users.UserRolesService;
 import com.lemonado.smartmeet.core.services.base.users.UserService;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class UserRolesServiceImpl implements UserRolesService {
 
     @Autowired
-    private UserRolesModelRepository userRolesRepository;
+    private UserRolesRepository userRolesRepository;
 
     @Autowired
     private RoleService roleService;

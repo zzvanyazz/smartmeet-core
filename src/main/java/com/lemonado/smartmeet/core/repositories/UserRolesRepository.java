@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRolesModelRepository {
+public interface UserRolesRepository {
 
     List<UserRoleModel> findByUserId(long userId);
 

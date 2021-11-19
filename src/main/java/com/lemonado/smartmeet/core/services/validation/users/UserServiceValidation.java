@@ -2,7 +2,7 @@ package com.lemonado.smartmeet.core.services.validation.users;
 
 import com.lemonado.smartmeet.core.data.exceptions.*;
 import com.lemonado.smartmeet.core.data.models.users.UserModel;
-import com.lemonado.smartmeet.core.repositories.UserModelRepository;
+import com.lemonado.smartmeet.core.repositories.UserRepository;
 import com.lemonado.smartmeet.core.services.base.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.List;
 public class UserServiceValidation implements UserService {
 
     @Autowired
-    private UserModelRepository userModelRepository;
+    private UserRepository userRepository;
 
     private final UserService userService;
 
@@ -60,7 +60,7 @@ public class UserServiceValidation implements UserService {
     public UserModel createNewUser(UserModel newUserModel)
             throws UserAlreadyExistsException, CanNotCreateUserException {
         var email = newUserModel.email();
-        if (userModelRepository.existsByEmail(email)) {
+        if (userRepository.existsByEmail(email)) {
             throw new UserAlreadyExistsException(email);
         }
         return userService.createNewUser(newUserModel);

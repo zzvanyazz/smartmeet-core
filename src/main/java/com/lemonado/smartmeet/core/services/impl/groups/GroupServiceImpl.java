@@ -10,7 +10,6 @@ import com.lemonado.smartmeet.core.options.SecureOptions;
 import com.lemonado.smartmeet.core.repositories.GroupRepository;
 import com.lemonado.smartmeet.core.services.base.groups.GroupService;
 import com.lemonado.smartmeet.core.services.base.users.UserService;
-import com.lemonado.smartmeet.core.services.impl.EventPublisher;
 import com.lemonado.smartmeet.core.services.impl.secure.SecureRandomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +20,6 @@ import java.util.Set;
 
 @Service
 public class GroupServiceImpl implements GroupService {
-
-    @Autowired
-    private EventPublisher eventPublisher;
 
     @Autowired
     private SecureOptions secureOptions;
@@ -50,9 +46,7 @@ public class GroupServiceImpl implements GroupService {
                 .withName(name)
                 .build();
 
-        groupModel = groupRepository.save(groupModel);
-        eventPublisher.onNew(groupModel);
-        return groupModel;
+        return groupRepository.save(groupModel);
     }
 
     @Override
